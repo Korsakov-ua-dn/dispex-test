@@ -2,6 +2,9 @@ import axios from 'axios'
 
 const instance = axios.create({
     baseURL: "https://dispex.org/api/vtest",
+    headers: {
+        "Authorization": "Bearer 81000uadn",
+    },
 })
 
 export const addressAPI = {
@@ -13,5 +16,11 @@ export const addressAPI = {
     },
     getFlats(houseID) {
         return instance.get(`/Request/house_flats/${houseID}`)
+    },
+}
+
+export const clientAPI = {
+    getClients(flatID) {
+        return instance.get(`/HousingStock/clients?addressId=${flatID}`)
     },
 }

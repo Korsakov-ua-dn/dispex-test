@@ -1,3 +1,15 @@
-.streets {
+.addressWrapper {
+    display: flex;
+}
+.title {
+    margin-bottom: 10px;
+}
+.street {
     width: 300px;
+}
+.house {
+    width: 100px;
+}
+.flat {
+    width: 150px;
 }

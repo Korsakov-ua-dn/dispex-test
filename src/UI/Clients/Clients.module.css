@@ -1,0 +1,25 @@
+.client {
+    width: 200px;
+    padding: 10px;
+    background-color: white;
+    border-radius: 5px;
+}
+.wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.imgWrapper {
+    width: 50px;
+    height: 50px;
+    margin-bottom: 10px;
+}
+.imgWrapper img {
+    width: 100%;
+}
+.btnWrapper {
+    /* background-color: #efefef; */
+}
+.btn {
+    width: 100px;
+}

@@ -1,7 +1,12 @@
-import {addressAPI} from "../DAL/API";
+import { addressAPI } from "../DAL/API";
 
 const initialState = {
-    streets: null
+    streets: null,
+    houses: null,
+    flats: null,
+    currentStreet: null,
+    currentHouse: null,
+    currentFlat: null,
 }
 
 export const addressReducer = (state = initialState, action) => {
@@ -9,6 +14,17 @@ export const addressReducer = (state = initialState, action) => {
         case "ADDRESS/SET-STREETS": {
             return {...state, streets: action.streets};
         }
+        case "ADDRESS/SET-HOUSES": {
+            return {...state, houses: action.houses};
+        }
+        case "ADDRESS/SET-FLAT": {
+            return {...state, flats: action.flats};
+        }
+        case "ADDRESS/SET-CURRENT-STREET":
+        case "ADDRESS/SET-CURRENT-HOUSES":
+        case "ADDRESS/SET-CURRENT-FLAT": 
+            return {...state, ...action.payload};
+        
         default:
             return state;
     }
@@ -16,14 +32,41 @@ export const addressReducer = (state = initialState, action) => {
 
 // actions
 export const setStreets = streets => ({type: "ADDRESS/SET-STREETS", streets});
+export const setHouses = houses => ({type: "ADDRESS/SET-HOUSES", houses});
+export const setFlats = flats => ({type: "ADDRESS/SET-FLAT", flats});
+export const setCurrentStreet = currentStreet => ({type: "ADDRESS/SET-CURRENT-STREET", payload: {currentStreet}});
+export const setCurrentHouse = currentHouse => ({type: "ADDRESS/SET-CURRENT-HOUSES", payload: {currentHouse}});
+export const setCurrentFlat = currentFlat => ({type: "ADDRESS/SET-CURRENT-FLAT", payload: {currentFlat}});
 
 // thunks
 export const getStreets = () => dispatch => {
     addressAPI.getStreets()
         .then(res => {
-            // res.data.reduce((a, c) => a.concat(c))
-            // console.log(res.data)
-            dispatch(setStreets(res.data.flat()));
+            dispatch(setStreets(res.data))
+        })
+    // .catch(e => {
+    //     const errorMessage = e.response?.data?.error || "Unknown error!";
+    //     dispatch(errorRequestAC(errorMessage));
+    // })
+    // .finally(() => dispatch(loaderAC(false)));
+}
+export const getHouses = streetID => dispatch => {
+    addressAPI.getHouses(streetID)
+        .then(res => {
+            dispatch(setHouses(res.data))
+            dispatch(setCurrentStreet(streetID))
+        })
+    // .catch(e => {
+    //     const errorMessage = e.response?.data?.error || "Unknown error!";
+    //     dispatch(errorRequestAC(errorMessage));
+    // })
+    // .finally(() => dispatch(loaderAC(false)));
+}
+export const getFlats = houseID => dispatch => {
+    addressAPI.getFlats(houseID)
+        .then(res => {
+            dispatch(setFlats(res.data))
+            dispatch(setCurrentHouse(houseID))
         })
     // .catch(e => {
     //     const errorMessage = e.response?.data?.error || "Unknown error!";
