@@ -1,25 +1,28 @@
-import {FormControl, InputLabel, MenuItem, Select} from "@mui/material";
+import {FormControl, IconButton, InputLabel, MenuItem, Select} from "@mui/material";
 import {useEffect} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {getStreets, getHouses, getFlats} from "../../BLL/address-reducer";
-import { getClients } from "../../BLL/client-reducer";
+import {getClients} from "../../BLL/client-reducer";
 import s from "./Address.module.css"
+import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 
 export const Address = () => {
-
     const dispatch = useDispatch()
-    const streets = useSelector(state => state.address.streets)
-    const houses = useSelector(state => state.address.houses)
-    const flats = useSelector(state => state.address.flats)
-    const currentStreet = useSelector(state => state.address.currentStreet)
-    const currentHouse = useSelector(state => state.address.currentHouse)
-    const currentFlat = useSelector(state => state.address.currentFlat)
+    const {
+        streets,
+        houses,
+        flats,
+        currentStreet,
+        currentHouse,
+        currentFlat
+    } = useSelector(state => state.address)
 
     useEffect(() => dispatch(getStreets()), [dispatch])
 
     const handleChangeStreet = e => dispatch(getHouses(e.target.value))
     const handleChangeHouse = e => dispatch(getFlats(e.target.value))
     const handleChangeFlat = e => dispatch(getClients(e.target.value))
+    // const handleAddClient = () => dispatch(addClient({clientId, name, phone, email, bindId}))
 
     return (
         <>
@@ -70,6 +73,11 @@ export const Address = () => {
                         }
                     </Select>
                 </FormControl>
+                {
+                    currentFlat && <IconButton className={s.btn}>
+                        <AddCircleOutlineIcon/>
+                    </IconButton>
+                }
             </div>
         </>
     )

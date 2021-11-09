@@ -1,8 +1,8 @@
 import {clientAPI} from "../DAL/API";
-import { setCurrentFlat } from "./address-reducer";
+import {setCurrentFlat} from "./address-reducer";
 
 const initialState = {
-    clients: null,
+    clients: [],
     // houses: null,
     // flats: null,
     // currentStreet: null,
@@ -15,12 +15,12 @@ export const clientReducer = (state = initialState, action) => {
         case "CLIENT/SET-CLIENTS": {
             return {...state, clients: action.clients};
         }
-       
+
         // case "ADDRESS/SET-CURRENT-STREET":
         // case "ADDRESS/SET-CURRENT-HOUSES":
         // case "ADDRESS/SET-CURRENT-FLAT": 
         //     return {...state, ...action.payload};
-        
+
         default:
             return state;
     }
@@ -35,6 +35,17 @@ export const getClients = flatID => dispatch => {
         .then(res => {
             dispatch(setClients(res.data));
             dispatch(setCurrentFlat(flatID))
+        })
+    // .catch(e => {
+    //     const errorMessage = e.response?.data?.error || "Unknown error!";
+    //     dispatch(errorRequestAC(errorMessage));
+    // })
+    // .finally(() => dispatch(loaderAC(false)));
+}
+export const addClient = payload => dispatch => {
+    clientAPI.addClient(payload)
+        .then(res => {
+            // dispatch(setClients(res.data));
         })
     // .catch(e => {
     //     const errorMessage = e.response?.data?.error || "Unknown error!";

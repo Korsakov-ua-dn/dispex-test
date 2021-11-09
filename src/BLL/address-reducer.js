@@ -1,13 +1,13 @@
-import { addressAPI } from "../DAL/API";
+import {addressAPI} from "../DAL/API";
 
 const initialState = {
-    streets: null,
-    houses: null,
-    flats: null,
-    currentStreet: null,
-    currentHouse: null,
-    currentFlat: null,
-}
+    streets: [],
+    houses: [],
+    flats: [],
+    currentStreet: '',
+    currentHouse: '',
+    currentFlat: '',
+} // MUI ругается на стартовое значение null
 
 export const addressReducer = (state = initialState, action) => {
     switch (action.type) {
@@ -22,9 +22,9 @@ export const addressReducer = (state = initialState, action) => {
         }
         case "ADDRESS/SET-CURRENT-STREET":
         case "ADDRESS/SET-CURRENT-HOUSES":
-        case "ADDRESS/SET-CURRENT-FLAT": 
+        case "ADDRESS/SET-CURRENT-FLAT":
             return {...state, ...action.payload};
-        
+
         default:
             return state;
     }

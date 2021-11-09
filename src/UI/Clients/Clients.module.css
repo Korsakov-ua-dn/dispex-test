@@ -1,5 +1,12 @@
+.clientsWrapper {
+    display: flex;
+    justify-content: space-evenly;
+    flex-wrap: wrap;
+}
 .client {
     width: 200px;
+    height: 250px;
+    margin: 20px;
     padding: 10px;
     background-color: white;
     border-radius: 5px;
@@ -7,19 +14,25 @@
 .wrapper {
     display: flex;
     flex-direction: column;
+    justify-content: space-between;
     align-items: center;
 }
 .imgWrapper {
     width: 50px;
-    height: 50px;
     margin-bottom: 10px;
 }
 .imgWrapper img {
     width: 100%;
 }
+.clientData {
+    align-items: start;
+}
+.clientData :not(:last-child) {
+    margin-bottom: 10px;
+}
 .btnWrapper {
     /* background-color: #efefef; */
 }
 .btn {
-    width: 100px;
+    width: 90px;
 }

@@ -23,4 +23,7 @@ export const clientAPI = {
     getClients(flatID) {
         return instance.get(`/HousingStock/clients?addressId=${flatID}`)
     },
+    addClient(payload) {
+        return instance.post(`/HousingStock/client`, payload)
+    },
 }
