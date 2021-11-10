@@ -26,4 +26,16 @@ export const clientAPI = {
     addClient(payload) {
         return instance.post(`/HousingStock/client`, payload)
     },
+    deleteClient(clientId, bindId) {
+        return instance.delete(`​/HousingStock/bind_client​?id=${bindId}`)
+    },
+    updateClient(clientId, bindId) {
+        return instance.put(`/HousingStock/bind_client`, {
+            "AddressId": 47438,
+            "ClientId": 32386,
+            "email": "zverevaolesa734@gmail.com",
+            "name": "олеся",
+            "phone": "343434343"
+          })
+    },
 }

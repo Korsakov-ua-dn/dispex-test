@@ -3,7 +3,7 @@ import {setCurrentFlat} from "./address-reducer";
 
 const initialState = {
     clients: [],
-    // houses: null,
+    
     // flats: null,
     // currentStreet: null,
     // currentHouse: null,
@@ -18,7 +18,7 @@ export const clientReducer = (state = initialState, action) => {
 
         // case "ADDRESS/SET-CURRENT-STREET":
         // case "ADDRESS/SET-CURRENT-HOUSES":
-        // case "ADDRESS/SET-CURRENT-FLAT": 
+        // case "CLIENT/SET-OPEN-MODAL": 
         //     return {...state, ...action.payload};
 
         default:
@@ -29,6 +29,7 @@ export const clientReducer = (state = initialState, action) => {
 // actions
 export const setClients = clients => ({type: "CLIENT/SET-CLIENTS", clients});
 
+
 // thunks
 export const getClients = flatID => dispatch => {
     clientAPI.getClients(flatID)
@@ -36,20 +37,4 @@ export const getClients = flatID => dispatch => {
             dispatch(setClients(res.data));
             dispatch(setCurrentFlat(flatID))
         })
-    // .catch(e => {
-    //     const errorMessage = e.response?.data?.error || "Unknown error!";
-    //     dispatch(errorRequestAC(errorMessage));
-    // })
-    // .finally(() => dispatch(loaderAC(false)));
-}
-export const addClient = payload => dispatch => {
-    clientAPI.addClient(payload)
-        .then(res => {
-            // dispatch(setClients(res.data));
-        })
-    // .catch(e => {
-    //     const errorMessage = e.response?.data?.error || "Unknown error!";
-    //     dispatch(errorRequestAC(errorMessage));
-    // })
-    // .finally(() => dispatch(loaderAC(false)));
 }

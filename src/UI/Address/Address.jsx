@@ -1,10 +1,11 @@
 import {FormControl, IconButton, InputLabel, MenuItem, Select} from "@mui/material";
 import {useEffect} from "react";
 import {useDispatch, useSelector} from "react-redux";
-import {getStreets, getHouses, getFlats} from "../../BLL/address-reducer";
+import {getStreets, getHouses, getFlats, setOpenModal, addClient} from "../../BLL/address-reducer";
 import {getClients} from "../../BLL/client-reducer";
 import s from "./Address.module.css"
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
+import { AddClientModal } from "./AddClienModal/AddClientModal";
 
 export const Address = () => {
     const dispatch = useDispatch()
@@ -14,7 +15,8 @@ export const Address = () => {
         flats,
         currentStreet,
         currentHouse,
-        currentFlat
+        currentFlat,
+        isOpenModal,
     } = useSelector(state => state.address)
 
     useEffect(() => dispatch(getStreets()), [dispatch])
@@ -22,7 +24,10 @@ export const Address = () => {
     const handleChangeStreet = e => dispatch(getHouses(e.target.value))
     const handleChangeHouse = e => dispatch(getFlats(e.target.value))
     const handleChangeFlat = e => dispatch(getClients(e.target.value))
-    // const handleAddClient = () => dispatch(addClient({clientId, name, phone, email, bindId}))
+
+    const handleAddClient = (name, phone, email,) => dispatch(addClient({name, phone, email, bindId: currentFlat}))
+    const handleOpenModal = () => dispatch(setOpenModal(true))
+    const handleCloseModal = () => dispatch(setOpenModal(false))
 
     return (
         <>
@@ -74,9 +79,13 @@ export const Address = () => {
                     </Select>
                 </FormControl>
                 {
-                    currentFlat && <IconButton className={s.btn}>
-                        <AddCircleOutlineIcon/>
-                    </IconButton>
+                    
+                    currentFlat && <div> 
+                        <IconButton onClick={handleOpenModal} className={s.btn}>
+                            <AddCircleOutlineIcon/>
+                            </IconButton>
+                        <AddClientModal open={isOpenModal} handleAddClient={handleAddClient} handleClose={handleCloseModal} />
+                    </div>
                 }
             </div>
         </>

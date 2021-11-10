@@ -1,4 +1,5 @@
-import {addressAPI} from "../DAL/API";
+import {addressAPI, clientAPI} from "../DAL/API";
+import { getClients } from "./client-reducer";
 
 const initialState = {
     streets: [],
@@ -7,6 +8,7 @@ const initialState = {
     currentStreet: '',
     currentHouse: '',
     currentFlat: '',
+    isOpenModal: false,
 } // MUI ругается на стартовое значение null
 
 export const addressReducer = (state = initialState, action) => {
@@ -20,6 +22,7 @@ export const addressReducer = (state = initialState, action) => {
         case "ADDRESS/SET-FLAT": {
             return {...state, flats: action.flats};
         }
+        case "ADDRESS/SET-OPEN-MODAL": 
         case "ADDRESS/SET-CURRENT-STREET":
         case "ADDRESS/SET-CURRENT-HOUSES":
         case "ADDRESS/SET-CURRENT-FLAT":
@@ -37,6 +40,7 @@ export const setFlats = flats => ({type: "ADDRESS/SET-FLAT", flats});
 export const setCurrentStreet = currentStreet => ({type: "ADDRESS/SET-CURRENT-STREET", payload: {currentStreet}});
 export const setCurrentHouse = currentHouse => ({type: "ADDRESS/SET-CURRENT-HOUSES", payload: {currentHouse}});
 export const setCurrentFlat = currentFlat => ({type: "ADDRESS/SET-CURRENT-FLAT", payload: {currentFlat}});
+export const setOpenModal = isOpenModal => ({type: "ADDRESS/SET-OPEN-MODAL", payload: {isOpenModal}});
 
 // thunks
 export const getStreets = () => dispatch => {
@@ -44,11 +48,6 @@ export const getStreets = () => dispatch => {
         .then(res => {
             dispatch(setStreets(res.data))
         })
-    // .catch(e => {
-    //     const errorMessage = e.response?.data?.error || "Unknown error!";
-    //     dispatch(errorRequestAC(errorMessage));
-    // })
-    // .finally(() => dispatch(loaderAC(false)));
 }
 export const getHouses = streetID => dispatch => {
     addressAPI.getHouses(streetID)
@@ -56,11 +55,6 @@ export const getHouses = streetID => dispatch => {
             dispatch(setHouses(res.data))
             dispatch(setCurrentStreet(streetID))
         })
-    // .catch(e => {
-    //     const errorMessage = e.response?.data?.error || "Unknown error!";
-    //     dispatch(errorRequestAC(errorMessage));
-    // })
-    // .finally(() => dispatch(loaderAC(false)));
 }
 export const getFlats = houseID => dispatch => {
     addressAPI.getFlats(houseID)
@@ -68,9 +62,18 @@ export const getFlats = houseID => dispatch => {
             dispatch(setFlats(res.data))
             dispatch(setCurrentHouse(houseID))
         })
-    // .catch(e => {
-    //     const errorMessage = e.response?.data?.error || "Unknown error!";
-    //     dispatch(errorRequestAC(errorMessage));
-    // })
-    // .finally(() => dispatch(loaderAC(false)));
+}
+export const addClient = payload => (dispatch, getState) => {
+    const flatID = getState().address.currentFlat
+    clientAPI.addClient(payload)
+        .then(res => {
+            // console.log(res); // data: {id: 70512, result: 'Ok'}
+            dispatch(getClients(flatID));
+            dispatch(setOpenModal(false))
+        })
+        .catch(e => {
+            console.log(e)
+            // const errorMessage = e.response?.data?.error || "Unknown error!";
+            // dispatch(setError(errorMessage));
+        })
 }

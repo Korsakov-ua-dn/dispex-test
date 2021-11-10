@@ -3,6 +3,7 @@ import BorderColorIcon from '@mui/icons-material/BorderColor';
 import {Delete} from "@mui/icons-material";
 import {useDispatch, useSelector} from "react-redux";
 import s from "./Clients.module.css"
+import { clientAPI } from "../../DAL/API";
 
 export const Clients = () => {
 
@@ -12,7 +13,7 @@ export const Clients = () => {
     return (
         <div className={s.clientsWrapper}>
             {
-                clients && clients.map(c => <Client key={c.id} name={c.name} phone={c.phone} email={c.email}/>)
+                clients && clients.map(c => <Client key={c.id} clientId={c.id} bindId={c.bindId} name={c.name} phone={c.phone} email={c.email}/>)
             }
         </div>
     )
@@ -21,8 +22,18 @@ export const Clients = () => {
 const Client = ({
                     name,
                     phone,
-                    email
+                    email,
+                    clientId,
+                    bindId,
                 }) => {
+
+    const handleDeleteClient = () => {
+        clientAPI.deleteClient(clientId, bindId)
+    }
+    const handleUpdateClient = () => {
+        clientAPI.updateClient(clientId, bindId)
+    }
+
     return (
         <div className={`${s.wrapper} ${s.client}`}>
             <div className={s.imgWrapper}>
@@ -34,10 +45,10 @@ const Client = ({
                 <span>{email}</span>
             </div>
             <div className={s.btnWrapper}>
-                <IconButton className={s.btn}>
+                <IconButton onClick={handleDeleteClient} className={s.btn}>
                     <Delete/>
                 </IconButton>
-                <IconButton className={s.btn}>
+                <IconButton onClick={handleUpdateClient} className={s.btn}>
                     <BorderColorIcon/>
                 </IconButton>
             </div>
